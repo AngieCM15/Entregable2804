@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+
+<form action="/create" id="formulario-registro" autocomplete="off" method="post" enctype="multipart/form-data">
+  <div class="card mt-2">
+    <div class="card-header"><strong>Registro de Bebida</strong></div>
+
+    <div class="card-body">
+      
+      <!-- Marca -->
+      <div class="row g-2">
+        <div class="col-md-6 mb-2">
+          <div class="form-floating">
+            <select name="marcas" id="marcas" class="form-select" required>
+              <option value="" selected disabled>Seleccione</option>
+              <% marcas.forEach(element => { %>
+                <option value="<%= element.idmarca %>"><%= element.marca %></option>
+              <% }) %>
+            </select>
+            <label for="marcas">Marca de la Empresa</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Licor, DNI y Cantidad -->
+      <div class="row g-2">
+        <div class="col-md-4 mb-2">
+          <div class="form-floating">
+            <select name="licor" id="licor" class="form-select" required>
+              <option value="" selected disabled>Seleccione un Licor</option>
+              <option value="Pisco sour Finca Rotondo">Pisco sour Finca Rotondo</option>
+              <option value="Pisco sour Montesierpe">Pisco sour Montesierpe</option>
+              <option value="Pisco Acholado Vargas">Pisco Acholado Vargas</option>
+              <option value="Lata de vino Borgoña">Lata de vino Borgoña</option>
+              <option value="Lata de vino Malbec">Lata de vino Malbec</option>
+              <option value="Lata de vino Chenin Blanc">Lata de vino Chenin Blanc</option>
+              <option value="Lata de vino Gran Rosa">Lata de vino Gran Rosa</option>
+              <option value="Malbec Reserva Finca Rotondo">Malbec Reserva Finca Rotondo</option>
+              <option value="Malbec Viña vieja">Malbec Viña vieja</option>
+              <option value="Chenin Blanc Viña vieja">Chenin Blanc Viña vieja</option>
+            </select>
+            <label for="licor">Nombre del Licor</label>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-2">
+          <div class="form-floating">
+            <input type="text" minlength="8" maxlength="8" pattern="[0-9]+" id="dni" name="dni" class="form-control" placeholder="DNI" required>
+            <label for="dni">DNI</label>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-2">
+          <div class="form-floating">
+            <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" required>
+            <label for="cantidad">Cantidad de Producto</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Condición -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-floating">
+            <select name="condicion" id="condicion" class="form-select" required>
+              <option value="Seco">Seco</option>
+              <option value="Semiseco">Semiseco</option>
+            </select>
+            <label for="condicion">Condición</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cargar Imagen -->
+      <div class="row g-2 mt-3">
+        <div class="col-md-12 mb-2">
+          <div class="form-floating">
+            <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
+            <label for="imagen">Subir Imagen (opcional)</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+      <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+      <a href="/" class="btn btn-sm btn-secondary">Cancelar</a>
+    </div>
+  </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const formulario = document.querySelector("#formulario-registro");
+
+    formulario.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const result = await Swal.fire({
+        title: '¿Está seguro de registrar esta bebida?',
+        text: 'Por favor, revise los detalles antes de continuar.',
+        icon: 'question',
+        footer: 'SENATI - Ingeniería Software',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#2980b9',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#c0392b'
+      });
+
+      if (result.isConfirmed) {
+        formulario.submit();
+      }
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

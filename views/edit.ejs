@@ -1,0 +1,112 @@
+<%- include('partials/header') %>
+
+<!-- Asegúrate de tener la librería SweetAlert2 si no la tienes -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<form action="/edit/<%= bebida.idbebida %>" id="formulario-registro" autocomplete="off" method="post">
+  <div class="card mt-2">
+    <div class="card-header"><strong>Actualización de Bebida</strong></div>
+
+    <div class="card-body">
+      
+      <!-- Marca -->
+      <div class="row g-2">
+        <div class="col-md-6 mb-2">
+          <div class="form-floating">
+            <select name="marcas" id="marcas" class="form-select" required>
+              <option value="" selected disabled>Seleccione</option>
+              <% marcas.forEach(element => { %>
+                <option value="<%= element.idmarca %>" <%= element.idmarca == bebida.idmarca ? 'selected' : '' %>>
+                  <%= element.marca %>
+                </option>
+              <% }) %>
+            </select>
+            <label for="marcas">Marca de la Empresa</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2">
+        <div class="col-md-4 mb-2">
+          <div class="form-floating">
+            <select name="licor" id="licor" class="form-select" required>
+              <option value="" selected disabled>Seleccione un Licor</option>
+              <option value="Pisco sour Finca Rotondo" <%= bebida.licor == 'Pisco sour Finca Rotondo' ? 'selected' : '' %>>Pisco sour Finca Rotondo</option>
+              <option value="Pisco sour Montesierpe" <%= bebida.licor == 'Pisco sour Montesierpe' ? 'selected' : '' %>>Pisco sour Montesierpe</option>
+              <option value="Pisco Acholado Vargas" <%= bebida.licor == 'Pisco Acholado Vargas' ? 'selected' : '' %>>Pisco Acholado Vargas</option>
+              <option value="Lata de vino Borgoña" <%= bebida.licor == 'Lata de vino Borgoña' ? 'selected' : '' %>>Lata de vino Borgoña</option>
+              <option value="Lata de vino Malbec" <%= bebida.licor == 'Lata de vino Malbec' ? 'selected' : '' %>>Lata de vino Malbec</option>
+              <option value="Lata de vino Chenin Blanc" <%= bebida.licor == 'Lata de vino Chenin Blanc' ? 'selected' : '' %>>Lata de vino Chenin Blanc</option>
+              <option value="Lata de vino Gran Rosa" <%= bebida.licor == 'Lata de vino Gran Rosa' ? 'selected' : '' %>>Lata de vino Gran Rosa</option>
+              <option value="Malbec Reserva Finca Rotondo" <%= bebida.licor == 'Malbec Reserva Finca Rotondo' ? 'selected' : '' %>>Malbec Reserva Finca Rotondo</option>
+              <option value="Malbec Viña vieja" <%= bebida.licor == 'Malbec Viña vieja' ? 'selected' : '' %>>Malbec Viña vieja</option>
+              <option value="Chenin Blanc Viña vieja" <%= bebida.licor == 'Chenin Blanc Viña vieja' ? 'selected' : '' %>>Chenin Blanc Viña vieja</option>
+            </select>
+            <label for="licor">Nombre del Licor</label>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-2">
+          <div class="form-floating">
+            <input type="text" minlength="8" maxlength="8" pattern="[0-9]+" id="dni" value="<%= bebida.dni %>" name="dni" class="form-control" placeholder="DNI" required>
+            <label for="dni">DNI</label>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-2">
+          <div class="form-floating">
+            <input type="text" id="cantidad" value="<%= bebida.cantidad %>" name="cantidad" class="form-control" placeholder="Cantidad" required>
+            <label for="cantidad">Cantidad de Producto</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Condición -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-floating">
+            <select name="condicion" id="condicion" class="form-select" required>
+              <option value="Seco" <%= bebida.condicion == 'Seco' ? 'selected' : '' %>>Seco</option>
+              <option value="Semiseco" <%= bebida.condicion == 'Semiseco' ? 'selected' : '' %>>Semiseco</option>
+            </select>
+            <label for="condicion">Condición del Licor</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+      <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+      <a href="/" class="btn btn-sm btn-secondary">Cancelar</a>
+    </div>
+  </div>
+</form>
+
+<!-- Script para la confirmación antes del envío -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const formulario = document.querySelector("#formulario-registro");
+
+    formulario.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const result = await Swal.fire({
+        title: '¿Está seguro de actualizar este licor?',
+        text: 'Por favor, revise los detalles antes de continuar.',
+        icon: 'question',
+        footer: 'SENATI - Ingeniería Software',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#2980b9',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#c0392b'
+      });
+
+      if (result.isConfirmed) {
+        formulario.submit();
+      }
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

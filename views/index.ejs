@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+
+<div class="table-responsive">
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Marca</th>
+        <th>DNI</th>
+        <th>Cantidad</th>
+        <th>Condición</th>
+        <th>Operaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% licores.forEach(licor => { %>
+      <tr>
+        <td><%= licor.idbebida %></td>
+        <td><%= licor.marca %></td>
+        <td><%= licor.dni %></td>
+        <td><%= licor.cantidad %></td>
+        <td><%= licor.condicion %></td>
+        <td>
+          <a href="/edit/<%= licor.idbebida %>" class="btn btn-sm btn-info">Editar</a>
+          <a href="/delete/<%= licor.idbebida %>" class="btn btn-sm btn-danger delete">Eliminar</a>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const enlacesEliminar = document.querySelectorAll(".delete");
+    enlacesEliminar.forEach(enlace => {
+      enlace.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        Swal.fire({
+          title: '¿Está seguro de eliminar este licor?',
+          text: '¡Esta acción no se puede deshacer!',
+          icon: 'warning',
+          footer: 'SENATI - Ingeniería Software',
+          confirmButtonText: 'Eliminar',
+          confirmButtonColor: '#c0392b',
+          showCancelButton: true,
+          cancelButtonText: 'Cancelar',
+          cancelButtonColor: '#2980b9'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = event.target.getAttribute("href");
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>
