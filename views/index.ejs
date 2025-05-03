@@ -1,33 +1,28 @@
 <%- include('partials/header') %>
 
-<div class="table-responsive">
-  <table class="table table-sm">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Marca</th>
-        <th>DNI</th>
-        <th>Cantidad</th>
-        <th>Condición</th>
-        <th>Operaciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% licores.forEach(licor => { %>
-      <tr>
-        <td><%= licor.idbebida %></td>
-        <td><%= licor.marca %></td>
-        <td><%= licor.dni %></td>
-        <td><%= licor.cantidad %></td>
-        <td><%= licor.condicion %></td>
-        <td>
-          <a href="/edit/<%= licor.idbebida %>" class="btn btn-sm btn-info">Editar</a>
-          <a href="/delete/<%= licor.idbebida %>" class="btn btn-sm btn-danger delete">Eliminar</a>
-        </td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
+<div class="container">
+  <div class="row">
+    <% licores.forEach(licor => { %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="/uploads/<%= licor.imagen %>" class="card-img-top" alt="Imagen de <%= licor.nombre %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= licor.marca %></h5>
+            <p class="card-text">
+              <strong>ID:</strong> <%= licor.idlicor %><br>
+              <strong>Código:</strong> <%= licor.dni %><br>
+              <strong>Cantidad:</strong> <%= licor.cantidad %><br>
+              <strong>Condición:</strong> <%= licor.condicion %>
+            </p>
+            <div class="d-flex justify-content-between">
+              <a href="/edit/<%= licor.idlicor %>" class="btn btn-sm btn-info">Editar</a>
+              <a href="/delete/<%= licor.idlicor %>" class="btn btn-sm btn-danger delete">Eliminar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
 </div>
 
 <script>

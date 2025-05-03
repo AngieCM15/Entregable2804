@@ -3,10 +3,7 @@
 <form action="/create" id="formulario-registro" autocomplete="off" method="post" enctype="multipart/form-data">
   <div class="card mt-2">
     <div class="card-header"><strong>Registro de Bebida</strong></div>
-
     <div class="card-body">
-      
-      <!-- Marca -->
       <div class="row g-2">
         <div class="col-md-6 mb-2">
           <div class="form-floating">
@@ -21,7 +18,6 @@
         </div>
       </div>
 
-      <!-- Licor, DNI y Cantidad -->
       <div class="row g-2">
         <div class="col-md-4 mb-2">
           <div class="form-floating">
@@ -29,23 +25,16 @@
               <option value="" selected disabled>Seleccione un Licor</option>
               <option value="Pisco sour Finca Rotondo">Pisco sour Finca Rotondo</option>
               <option value="Pisco sour Montesierpe">Pisco sour Montesierpe</option>
-              <option value="Pisco Acholado Vargas">Pisco Acholado Vargas</option>
-              <option value="Lata de vino Borgoña">Lata de vino Borgoña</option>
-              <option value="Lata de vino Malbec">Lata de vino Malbec</option>
-              <option value="Lata de vino Chenin Blanc">Lata de vino Chenin Blanc</option>
-              <option value="Lata de vino Gran Rosa">Lata de vino Gran Rosa</option>
-              <option value="Malbec Reserva Finca Rotondo">Malbec Reserva Finca Rotondo</option>
-              <option value="Malbec Viña vieja">Malbec Viña vieja</option>
-              <option value="Chenin Blanc Viña vieja">Chenin Blanc Viña vieja</option>
+              <!-- ...otros -->
             </select>
             <label for="licor">Nombre del Licor</label>
           </div>
         </div>
-        
+
         <div class="col-md-4 mb-2">
           <div class="form-floating">
             <input type="text" minlength="8" maxlength="8" pattern="[0-9]+" id="dni" name="dni" class="form-control" placeholder="DNI" required>
-            <label for="dni">DNI</label>
+            <label for="dni">Código</label>
           </div>
         </div>
 
@@ -57,7 +46,6 @@
         </div>
       </div>
 
-      <!-- Condición -->
       <div class="row">
         <div class="col-md-12">
           <div class="form-floating">
@@ -70,7 +58,6 @@
         </div>
       </div>
 
-      <!-- Cargar Imagen -->
       <div class="row g-2 mt-3">
         <div class="col-md-12 mb-2">
           <div class="form-floating">
@@ -79,7 +66,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="card-footer">
@@ -91,29 +77,36 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const formulario = document.querySelector("#formulario-registro");
-
-    formulario.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const result = await Swal.fire({
-        title: '¿Está seguro de registrar esta bebida?',
-        text: 'Por favor, revise los detalles antes de continuar.',
-        icon: 'question',
-        footer: 'SENATI - Ingeniería Software',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#2980b9',
-        showCancelButton: true,
-        cancelButtonText: 'Cancelar',
-        cancelButtonColor: '#c0392b'
+  document.getElementById('formulario-registro').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    try {
+      const response = await fetch(event.target.action, {
+        method: 'POST',
+        body: formData
       });
-
-      if (result.isConfirmed) {
-        formulario.submit();
+      const result = await response.json();
+      if (result.success) {
+        Swal.fire({
+          title: 'Éxito',
+          text: result.message,
+          icon: 'success'
+        }).then(() => {
+          window.location.href = '/';
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: result.message,
+          icon: 'error'
+        });
       }
-    });
+    } catch (error) {
+      Swal.fire({
+        title: 'Error de red',
+        text: 'No se pudo guardar el licor.',
+        icon: 'error'
+      });
+    }
   });
 </script>
-
-<%- include('partials/footer') %>
